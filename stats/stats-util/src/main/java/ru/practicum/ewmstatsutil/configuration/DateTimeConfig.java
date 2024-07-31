@@ -12,7 +12,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import java.time.format.DateTimeFormatter;
 
 @Configuration
-public class StatsConfig {
+public class DateTimeConfig {
     @Value("${format.pattern.datetime}")
     private String dateTimeFormat;
 

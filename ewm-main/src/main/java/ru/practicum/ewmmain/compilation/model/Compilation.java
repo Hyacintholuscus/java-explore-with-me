@@ -1,36 +1,36 @@
-package ru.practicum.ewmstatsserver.model;
+package ru.practicum.ewmmain.compilation.model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import ru.practicum.ewmmain.events.model.Event;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
+@Generated
 @Entity
-@Table(name = "stats")
-public class StatsModel {
+@Table(name = "compilations")
+public class Compilation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String app;
-    private String uri;
-    private String ip;
-    @Column(name = "timest")
-    private LocalDateTime timestamp;
+    private String title;
+    private Boolean pinned;
+    @ManyToMany
+    private Set<Event> events;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        StatsModel statsModel = (StatsModel) o;
-        if (id == null) return false;
-        return Objects.equals(id, statsModel.id);
+        Compilation that = (Compilation) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
@@ -40,12 +40,10 @@ public class StatsModel {
 
     @Override
     public String toString() {
-        return "StatsModel{" +
+        return "Compilation{" +
                 "id=" + id +
-                ", app='" + app + '\'' +
-                ", uri='" + uri + '\'' +
-                ", ip='" + ip + '\'' +
-                ", timestamp=" + timestamp +
+                ", title='" + title + '\'' +
+                ", pinned=" + pinned +
                 '}';
     }
 }

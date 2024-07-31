@@ -1,10 +1,9 @@
-package ru.practicum.ewmstatsserver.model;
+package ru.practicum.ewmmain.categories.model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -12,25 +11,21 @@ import java.util.Objects;
 @Getter
 @Setter
 @Builder
+@Generated
 @Entity
-@Table(name = "stats")
-public class StatsModel {
+@Table(name = "categories")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String app;
-    private String uri;
-    private String ip;
-    @Column(name = "timest")
-    private LocalDateTime timestamp;
+    private String name;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        StatsModel statsModel = (StatsModel) o;
-        if (id == null) return false;
-        return Objects.equals(id, statsModel.id);
+        Category category = (Category) o;
+        return Objects.equals(id, category.id);
     }
 
     @Override
@@ -40,12 +35,9 @@ public class StatsModel {
 
     @Override
     public String toString() {
-        return "StatsModel{" +
+        return "Category{" +
                 "id=" + id +
-                ", app='" + app + '\'' +
-                ", uri='" + uri + '\'' +
-                ", ip='" + ip + '\'' +
-                ", timestamp=" + timestamp +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

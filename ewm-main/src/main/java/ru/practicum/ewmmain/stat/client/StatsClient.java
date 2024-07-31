@@ -1,4 +1,4 @@
-package ru.practicum.ewmmain.client;
+package ru.practicum.ewmmain.stat.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public interface StatsClient {
     @PostMapping("/hit")
     CreateStatsDto createStats(@RequestBody CreateStatsDto creationDto);
 
-    @GetMapping("/stats?start={start}&end={end}&uris={uris}&unique={unique}")
+    @GetMapping("/stats")
     List<StatsDto> getStats(@RequestParam String start,
                             @RequestParam String end,
                             @RequestParam(required = false) String[] uris,
