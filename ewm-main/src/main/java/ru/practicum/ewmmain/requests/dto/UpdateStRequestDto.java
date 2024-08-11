@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 import ru.practicum.ewmmain.requests.model.RequestStatus;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 @Value

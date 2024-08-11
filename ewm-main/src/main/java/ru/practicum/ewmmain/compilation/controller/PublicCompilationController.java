@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmain.compilation.dto.CompilationDto;
 import ru.practicum.ewmmain.compilation.service.CompilationService;
 
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Validated
@@ -19,14 +19,14 @@ import java.util.List;
 public class PublicCompilationController {
     private final CompilationService compilationService;
 
-    @GetMapping("/{compId}")
+    @GetMapping({"/{compId}", "/{compId}/"})
     public CompilationDto getByIdCompilation(@PathVariable
                                              @Positive(message = "Compilation's id should be positive")
                                              Long compId) {
         return compilationService.getByIdCompilation(compId);
     }
 
-    @GetMapping
+    @GetMapping({"", "/"})
     public List<CompilationDto> getCompilations(@RequestParam(required = false) Boolean pinned,
                                                 @RequestParam(defaultValue = "0")
                                                @PositiveOrZero(message = "Parameter 'from' shouldn't be negative")

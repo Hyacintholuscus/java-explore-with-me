@@ -8,8 +8,8 @@ import ru.practicum.ewmmain.requests.dto.RequestDto;
 import ru.practicum.ewmmain.requests.dto.UpdateStRequestDto;
 import ru.practicum.ewmmain.requests.service.RequestService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class PrivateRequestController {
     private final RequestService requestService;
 
     @ResponseStatus(code = HttpStatus.CREATED)
-    @PostMapping("/requests")
+    @PostMapping(value = {"/requests", "/requests/"})
     public RequestDto createRequestDto(@PathVariable
                                            @Positive(message = "User's id should be positive")
                                            Long userId,
@@ -32,7 +32,7 @@ public class PrivateRequestController {
         return requestService.createRequest(userId, eventId);
     }
 
-    @PatchMapping("/requests/{requestId}/cancel")
+    @PatchMapping(value = {"/requests/{requestId}/cancel", "/requests/{requestId}/cancel/"})
     public RequestDto cancelRequest(@PathVariable
                                         @Positive(message = "User's id should be positive")
                                         Long userId,
@@ -42,7 +42,7 @@ public class PrivateRequestController {
         return requestService.cancelRequest(userId, requestId);
     }
 
-    @PatchMapping("/events/{eventId}/requests")
+    @PatchMapping(value = {"/events/{eventId}/requests", "/events/{eventId}/requests/"})
     public Map<String, List<RequestDto>> changeStateRequest(@PathVariable
                                                                 @Positive(message = "User's id should be positive")
                                                                 Long userId,
@@ -55,14 +55,14 @@ public class PrivateRequestController {
         } else return requestService.changeStatusRequests(userId, eventId, updateDto);
     }
 
-    @GetMapping("/requests")
+    @GetMapping({"/requests", "/requests/"})
     public List<RequestDto> getUserRequests(@PathVariable
                                             @Positive(message = "User's id should be positive")
                                             Long userId) {
         return requestService.getByUserRequests(userId);
     }
 
-    @GetMapping("/events/{eventId}/requests")
+    @GetMapping({"/events/{eventId}/requests", "/events/{eventId}/requests/"})
     public List<RequestDto> getUserEventRequests(@PathVariable
                                                      @Positive(message = "User's id should be positive")
                                                      Long userId,

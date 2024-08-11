@@ -9,8 +9,8 @@ import ru.practicum.ewmmain.compilation.dto.CreateCompilationDto;
 import ru.practicum.ewmmain.compilation.dto.UpdateCompilationDto;
 import ru.practicum.ewmmain.compilation.service.CompilationService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 
 @Validated
 @RestController
@@ -19,13 +19,13 @@ import javax.validation.constraints.Positive;
 public class AdminCompilationController {
     private final CompilationService compilationService;
 
-    @PostMapping
+    @PostMapping({"", "/"})
     @ResponseStatus(code = HttpStatus.CREATED)
     public CompilationDto createCompilation(@Valid @RequestBody CreateCompilationDto createCompilationDto) {
         return compilationService.createCompilation(createCompilationDto);
     }
 
-    @PatchMapping("/{compId}")
+    @PatchMapping({"/{compId}", "/{compId}/"})
     public CompilationDto updateCompilation(@PathVariable
                                                 @Positive(message = "Compilation's id should be positive")
                                                 Long compId,
@@ -33,7 +33,7 @@ public class AdminCompilationController {
         return compilationService.updateCompilation(compId, updateDto);
     }
 
-    @DeleteMapping("/{compId}")
+    @DeleteMapping({"/{compId}", "/{compId}/"})
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public Long deleteCompilation(@PathVariable
                                   @Positive(message = "Compilation's id should be positive")

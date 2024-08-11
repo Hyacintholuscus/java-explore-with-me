@@ -12,9 +12,9 @@ import ru.practicum.ewmmain.events.dto.EventShortDto;
 import ru.practicum.ewmmain.events.dto.UpdateEventDto;
 import ru.practicum.ewmmain.events.service.EventService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Validated
@@ -25,7 +25,7 @@ public class PrivateEventController {
     private final EventService eventService;
 
     @ResponseStatus(code = HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping({"", "/"})
     public EventLongDto createEvent(@PathVariable
                                           @Positive(message = "User's id should be positive")
                                           Long userId,
@@ -33,7 +33,7 @@ public class PrivateEventController {
         return eventService.create(userId, createEventDto);
     }
 
-    @PatchMapping("/{eventId}")
+    @PatchMapping({"/{eventId}", "/{eventId}/"})
     public EventLongDto updateEventByUser(@PathVariable
                                               @Positive(message = "User's id should be positive")
                                               Long userId,
@@ -44,7 +44,7 @@ public class PrivateEventController {
         return eventService.updateByUser(userId, eventId, updateDto);
     }
 
-    @GetMapping
+    @GetMapping({"", "/"})
     public List<EventShortDto> getAllByUser(@PathVariable
                                             @Positive(message = "User's id should be positive")
                                             Long userId,
@@ -59,7 +59,7 @@ public class PrivateEventController {
         return eventService.getAllByUser(userId, PageRequest.of(page, size, sort));
     }
 
-    @GetMapping("/{eventId}")
+    @GetMapping({"/{eventId}", "/{eventId}/"})
     public EventLongDto getEventByUser(@PathVariable
                                            @Positive(message = "User's id should be positive")
                                            Long userId,

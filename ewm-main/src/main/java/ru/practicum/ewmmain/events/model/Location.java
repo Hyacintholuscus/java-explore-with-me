@@ -3,7 +3,7 @@ package ru.practicum.ewmmain.events.model;
 import lombok.Builder;
 import lombok.Value;
 
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 
 @Value
 @Builder

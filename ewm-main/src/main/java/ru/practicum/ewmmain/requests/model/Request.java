@@ -5,7 +5,7 @@ import org.hibernate.Hibernate;
 import ru.practicum.ewmmain.events.model.Event;
 import ru.practicum.ewmmain.user.model.User;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 

@@ -3,7 +3,7 @@ package ru.practicum.ewmmain.compilation.dto;
 import lombok.Builder;
 import lombok.Value;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 import java.util.Set;
 
 @Value

@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 import ru.practicum.ewmmain.events.model.Event;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 

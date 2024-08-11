@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 import ru.practicum.ewmmain.events.model.Location;
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Value

@@ -12,9 +12,9 @@ import ru.practicum.ewmmain.events.params.EventAdminSearchParam;
 import ru.practicum.ewmmain.events.service.EventService;
 import ru.practicum.ewmstatsutil.Formatter;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,7 +25,7 @@ import java.util.List;
 public class AdminEventController {
     private final EventService eventService;
 
-    @PatchMapping("/{eventId}")
+    @PatchMapping({"/{eventId}", "/{eventId}/"})
     public EventLongDto updateEventByAdmin(@PathVariable
                                           @Positive(message = "Event's id should be positive")
                                           Long eventId,
@@ -33,7 +33,7 @@ public class AdminEventController {
         return eventService.updateByAdmin(eventId, updateDto);
     }
 
-    @GetMapping
+    @GetMapping({"", "/"})
     public List<EventLongDto> getAllByAdmin(@RequestParam(required = false) List<Long> users,
                                              @RequestParam(required = false) List<EventState> states,
                                              @RequestParam(required = false) List<Long> categories,

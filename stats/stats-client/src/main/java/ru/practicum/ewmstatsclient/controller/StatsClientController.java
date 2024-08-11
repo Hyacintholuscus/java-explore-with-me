@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmstatsclient.client.StatsClient;
 import ru.practicum.ewmstatsutil.dto.CreateStatsDto;
 
-import javax.validation.Valid;
-import javax.validation.ValidationException;
+import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;

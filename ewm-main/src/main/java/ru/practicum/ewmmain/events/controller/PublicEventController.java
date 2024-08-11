@@ -11,9 +11,9 @@ import ru.practicum.ewmmain.events.dto.EventShortDto;
 import ru.practicum.ewmmain.events.service.EventService;
 import ru.practicum.ewmstatsutil.Formatter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class PublicEventController {
     private final EventService eventService;
     private final StatsService statsService;
 
-    @GetMapping
+    @GetMapping({"", "/"})
     public List<EventShortDto> getAllPublicEvents(@RequestParam(required = false, defaultValue = "") String text,
                                                   @RequestParam(required = false) List<Long> categories,
                                                   @RequestParam(required = false) Boolean paid,
@@ -59,7 +59,7 @@ public class PublicEventController {
         return events;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}", "/{id}/"})
     public EventLongDto getPublicEventById(@PathVariable
                                                 @Positive(message = "Event's id should be positive")
                                                 Long id, HttpServletRequest request) {

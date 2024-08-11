@@ -11,8 +11,8 @@ import ru.practicum.ewmmain.categories.dto.CreateCategoryDto;
 import ru.practicum.ewmmain.categories.service.CategoryService;
 import ru.practicum.ewmmain.exception.ConflictException;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 
 @Slf4j
 @Validated
@@ -23,13 +23,13 @@ public class AdminCategoryController {
     private final CategoryService categoryService;
 
     @ResponseStatus(code = HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping({"", "/"})
     public CategoryDto createCategory(@Valid @RequestBody CreateCategoryDto createCategoryDto) {
         return categoryService.createCategory(createCategoryDto);
     }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{catId}")
+    @DeleteMapping({"/{catId}", "/{catId}/"})
     public Long deleteCategory(@PathVariable
                                @Positive(message = "Category's id should be positive")
                                Long catId) {
@@ -41,7 +41,7 @@ public class AdminCategoryController {
         }
     }
 
-    @PatchMapping("/{catId}")
+    @PatchMapping({"/{catId}", "/{catId}/"})
     public CategoryDto updateCategory(@Valid @RequestBody CreateCategoryDto createCategoryDto,
                                       @PathVariable
                                       @Positive(message = "Category's id should be positive")

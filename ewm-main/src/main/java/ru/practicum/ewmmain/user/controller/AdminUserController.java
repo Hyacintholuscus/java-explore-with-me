@@ -9,9 +9,9 @@ import ru.practicum.ewmmain.user.dto.CreateUserDto;
 import ru.practicum.ewmmain.user.dto.UserDto;
 import ru.practicum.ewmmain.user.service.UserService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Validated
@@ -22,20 +22,20 @@ public class AdminUserController {
     private final UserService userService;
 
     @ResponseStatus(code = HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping({"", "/"})
     public UserDto createUser(@Valid @RequestBody CreateUserDto createUserDto) {
         return userService.createUser(createUserDto);
     }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{userId}")
+    @DeleteMapping({"/{userId}", "/{userId}/"})
     public Long deleteUser(@PathVariable
                            @Positive(message = "User's id should be positive")
                            Long userId) {
         return userService.deleteUser(userId);
     }
 
-    @GetMapping
+    @GetMapping({"", "/"})
     public List<UserDto> getUsersByIds(@RequestParam(required = false) List<Long> ids,
                                        @RequestParam(defaultValue = "0")
                                        @PositiveOrZero(message = "Parameter 'from' shouldn't be negative")

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmain.categories.dto.CategoryDto;
 import ru.practicum.ewmmain.categories.service.CategoryService;
 
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Validated
@@ -19,7 +19,7 @@ import java.util.List;
 public class PublicCategoryController {
     private final CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping({"", "/"})
     public List<CategoryDto> getAllCategories(@RequestParam(defaultValue = "0")
                                               @PositiveOrZero(message = "Parameter 'from' shouldn't be negative")
                                               int from,
@@ -31,7 +31,7 @@ public class PublicCategoryController {
         return categoryService.getCategories(PageRequest.of(page, size, sort));
     }
 
-    @GetMapping("/{catId}")
+    @GetMapping({"/{catId}", "/{catId}/"})
     public CategoryDto getCategoryById(@PathVariable
                                        @Positive(message = "Category's id should be positive")
                                        Long catId) {
