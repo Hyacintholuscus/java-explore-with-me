@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import lombok.Builder;
 import lombok.Value;
+import ru.practicum.ewmmain.events.enums.StateAction;
 import ru.practicum.ewmmain.events.model.Location;
 
 import jakarta.validation.constraints.*;

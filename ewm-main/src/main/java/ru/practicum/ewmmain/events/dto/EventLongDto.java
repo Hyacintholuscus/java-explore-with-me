@@ -3,11 +3,12 @@ package ru.practicum.ewmmain.events.dto;
 import lombok.Builder;
 import lombok.Value;
 import ru.practicum.ewmmain.categories.dto.CategoryDto;
-import ru.practicum.ewmmain.events.model.EventState;
+import ru.practicum.ewmmain.events.enums.EventState;
 import ru.practicum.ewmmain.events.model.Location;
 import ru.practicum.ewmmain.user.dto.InitiatorDto;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Value
 @Builder
@@ -28,4 +29,5 @@ public class EventLongDto {
     Boolean requestModeration;
     EventState state;
     Long views;
+    Set<ModerationCommentDto> moderationComments;
 }

@@ -1,4 +1,4 @@
-package ru.practicum.ewmmain.events.dto;
+package ru.practicum.ewmmain.events.enums;
 
 public enum StateAction {
     /*

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewmmain.events.model.EventState;
+import ru.practicum.ewmmain.events.enums.EventState;
 import ru.practicum.ewmmain.events.model.Event;
 import ru.practicum.ewmmain.events.storage.EventStorage;
 import ru.practicum.ewmmain.exception.ConflictException;

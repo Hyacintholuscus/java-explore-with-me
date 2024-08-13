@@ -6,11 +6,10 @@ import ru.practicum.ewmmain.categories.dto.CategoryDto;
 import ru.practicum.ewmmain.user.dto.InitiatorDto;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Value
 @Builder
-public class EventShortDto {
+public class PublicEventShortDto {
     Long id;
     InitiatorDto initiator;
     String title;
@@ -20,5 +19,4 @@ public class EventShortDto {
     Boolean paid;
     LocalDateTime eventDate;
     Integer views;
-    Set<ModerationCommentDto> moderationComments;
 }

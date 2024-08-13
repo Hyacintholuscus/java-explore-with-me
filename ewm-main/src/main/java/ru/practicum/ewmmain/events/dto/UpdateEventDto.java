@@ -2,6 +2,7 @@ package ru.practicum.ewmmain.events.dto;
 
 import lombok.Builder;
 import lombok.Value;
+import ru.practicum.ewmmain.events.enums.StateAction;
 import ru.practicum.ewmmain.events.model.Location;
 
 import jakarta.validation.constraints.*;

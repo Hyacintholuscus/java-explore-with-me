@@ -3,7 +3,7 @@ package ru.practicum.ewmmain.events.storage;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.query.QueryUtils;
-import ru.practicum.ewmmain.events.model.EventState;
+import ru.practicum.ewmmain.events.enums.EventState;
 import ru.practicum.ewmmain.events.model.Event;
 import ru.practicum.ewmmain.events.params.EventAdminSearchParam;
 import ru.practicum.ewmmain.events.params.EventPublicSearchParam;

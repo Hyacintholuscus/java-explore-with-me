@@ -3,9 +3,13 @@ package ru.practicum.ewmmain.events.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewmmain.events.model.EventState;
+import ru.practicum.ewmmain.events.enums.AdminEventSort;
+import ru.practicum.ewmmain.events.dto.CreateModerationCommentDto;
+import ru.practicum.ewmmain.events.dto.ModerationCommentDto;
+import ru.practicum.ewmmain.events.enums.EventState;
 import ru.practicum.ewmmain.events.dto.EventLongDto;
 import ru.practicum.ewmmain.events.dto.UpdateEventDto;
 import ru.practicum.ewmmain.events.params.EventAdminSearchParam;
@@ -59,5 +63,33 @@ public class AdminEventController {
                 .end(end)
                 .pageable(PageRequest.of(page, size, sort))
                 .build());
+    }
+
+    @GetMapping({"/moderation", "/moderation/"})
+    public List<EventLongDto> getPendingEvents(@RequestParam(defaultValue = "EVENT_DATE_ASC") AdminEventSort sort,
+                                               @RequestParam(defaultValue = "0")
+                                               @PositiveOrZero(message = "Parameter 'from' shouldn't be negative")
+                                                   int from,
+                                               @RequestParam(defaultValue = "10")
+                                               @Positive(message = "Parameter 'size' should be positive")
+                                               int size) {
+        return eventService.getPendingEvents(PageRequest.of((from / size), size, sort.getSortValue()));
+    }
+
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @PostMapping({"/{eventId}/moderation", "/{eventId}/moderation/"})
+    public ModerationCommentDto createComment(@PathVariable
+                                                  @Positive(message = "Event's id should be positive")
+                                                  Long eventId,
+                                              @Valid @RequestBody CreateModerationCommentDto commentDto) {
+        return eventService.createModerationComment(eventId, commentDto);
+    }
+
+    @PatchMapping({"/moderation/{comId}", "/moderation/{comId}/"})
+    public ModerationCommentDto updateComment(@PathVariable
+                                              @Positive(message = "Event's id should be positive")
+                                              Long comId,
+                                              @Valid @RequestBody CreateModerationCommentDto commentDto) {
+        return eventService.updateModerationComment(comId, commentDto);
     }
 }

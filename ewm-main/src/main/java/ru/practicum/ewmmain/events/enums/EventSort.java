@@ -1,4 +1,4 @@
-package ru.practicum.ewmmain.events.service;
+package ru.practicum.ewmmain.events.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

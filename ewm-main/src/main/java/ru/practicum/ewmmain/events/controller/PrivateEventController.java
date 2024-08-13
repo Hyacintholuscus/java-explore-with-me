@@ -10,6 +10,7 @@ import ru.practicum.ewmmain.events.dto.CreateEventDto;
 import ru.practicum.ewmmain.events.dto.EventLongDto;
 import ru.practicum.ewmmain.events.dto.EventShortDto;
 import ru.practicum.ewmmain.events.dto.UpdateEventDto;
+import ru.practicum.ewmmain.events.enums.EventState;
 import ru.practicum.ewmmain.events.service.EventService;
 
 import jakarta.validation.Valid;
@@ -45,7 +46,8 @@ public class PrivateEventController {
     }
 
     @GetMapping({"", "/"})
-    public List<EventShortDto> getAllByUser(@PathVariable
+    public List<EventShortDto> getAllByUser(@RequestParam(required = false) EventState state,
+                                            @PathVariable
                                             @Positive(message = "User's id should be positive")
                                             Long userId,
                                             @RequestParam(defaultValue = "0")
@@ -56,7 +58,7 @@ public class PrivateEventController {
                                             int size) {
         int page = from / size;
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        return eventService.getAllByUser(userId, PageRequest.of(page, size, sort));
+        return eventService.getAllByUser(userId, state, PageRequest.of(page, size, sort));
     }
 
     @GetMapping({"/{eventId}", "/{eventId}/"})

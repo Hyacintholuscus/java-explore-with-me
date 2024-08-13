@@ -2,7 +2,7 @@ package ru.practicum.ewmmain.compilation.dto;
 
 import lombok.Builder;
 import lombok.Value;
-import ru.practicum.ewmmain.events.dto.EventShortDto;
+import ru.practicum.ewmmain.events.dto.PublicEventShortDto;
 
 import java.util.Set;
 
@@ -12,5 +12,5 @@ public class CompilationDto {
     Long id;
     String title;
     Boolean pinned;
-    Set<EventShortDto> events;
+    Set<PublicEventShortDto> events;
 }
