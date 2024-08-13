@@ -3,7 +3,7 @@ package ru.practicum.ewmstatsserver.model;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ import java.util.Objects;
 public class StatsModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     private String app;
     private String uri;
     private String ip;

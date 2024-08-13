@@ -1,5 +1,6 @@
 package ru.practicum.ewmstatsserver.service;
 
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,11 @@ public class StatsServiceImpl implements StatsService {
     @Override
     public List<StatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
         log.info("Запрос на получение статистики по эндпоинту/-ам {}", uris);
+
+        if (end.isBefore(start)) {
+            log.error("Дата начала = {} после даты конца диапазона = {} не соответствует формату.", start, end);
+            throw new ValidationException("The range start date must be before the end date.");
+        }
 
         List<StatsView> views;
         if (unique) {

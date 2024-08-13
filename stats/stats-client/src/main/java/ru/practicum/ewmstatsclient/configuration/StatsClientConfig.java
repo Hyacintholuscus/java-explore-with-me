@@ -1,8 +1,8 @@
 package ru.practicum.ewmstatsclient.configuration;
 
 import org.springframework.context.annotation.Configuration;
-import ru.practicum.ewmstatsutil.configuration.StatsConfig;
+import ru.practicum.ewmstatsutil.configuration.DateTimeConfig;
 
 @Configuration
-public class StatsClientConfig extends StatsConfig {
+public class StatsClientConfig extends DateTimeConfig {
 }

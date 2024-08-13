@@ -8,7 +8,7 @@ import ru.practicum.ewmstatsserver.service.StatsService;
 import ru.practicum.ewmstatsutil.dto.CreateStatsDto;
 import ru.practicum.ewmstatsutil.dto.StatsDto;
 
-import javax.validation.ValidationException;
+import jakarta.validation.ValidationException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
