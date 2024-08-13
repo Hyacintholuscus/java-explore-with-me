@@ -26,7 +26,7 @@ public class PublicEventController {
     private final StatsService statsService;
 
     @GetMapping({"", "/"})
-    public List<EventShortDto> getAllPublicEvents(@RequestParam(required = false, defaultValue = "") String text,
+    public List<EventShortDto> getAllPublicEvents(@RequestParam(defaultValue = "") String text,
                                                   @RequestParam(required = false) List<Long> categories,
                                                   @RequestParam(required = false) Boolean paid,
                                                   @RequestParam(required = false) String rangeStart,
@@ -34,11 +34,11 @@ public class PublicEventController {
                                                   @RequestParam(defaultValue = "false") boolean onlyAvailable,
                                                   @RequestParam(required = false) EventSort sort,
                                                   @RequestParam(defaultValue = "0")
-                                                @PositiveOrZero(message = "Parameter 'from' shouldn't be negative")
-                                                int from,
+                                                      @PositiveOrZero(message = "Parameter 'from' shouldn't be negative")
+                                                      int from,
                                                   @RequestParam(defaultValue = "10")
-                                            @Positive(message = "Parameter 'size' should be positive")
-                                            int size, HttpServletRequest request) {
+                                                      @Positive(message = "Parameter 'size' should be positive")
+                                                      int size, HttpServletRequest request) {
         LocalDateTime start = (rangeStart != null) ? LocalDateTime.parse(rangeStart, Formatter.getFormatter())
                 : LocalDateTime.now();
         LocalDateTime end = (rangeEnd != null) ? LocalDateTime.parse(rangeEnd, Formatter.getFormatter())
@@ -61,8 +61,8 @@ public class PublicEventController {
 
     @GetMapping({"/{id}", "/{id}/"})
     public EventLongDto getPublicEventById(@PathVariable
-                                                @Positive(message = "Event's id should be positive")
-                                                Long id, HttpServletRequest request) {
+                                               @Positive(message = "Event's id should be positive")
+                                               Long id, HttpServletRequest request) {
         EventLongDto event = eventService.getPublicById(id);
         statsService.createStats(request.getRequestURI(), request.getRemoteAddr());
         return event;

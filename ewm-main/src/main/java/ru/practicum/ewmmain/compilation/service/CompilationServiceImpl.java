@@ -88,6 +88,7 @@ public class CompilationServiceImpl implements CompilationService {
         return id;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public CompilationDto getByIdCompilation(Long id) {
         log.info("Запрос найти подборку событий с id {}.", id);
@@ -96,6 +97,7 @@ public class CompilationServiceImpl implements CompilationService {
         return compilationMapper.toDto(compilation);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CompilationDto> getCompilations(Boolean pinned, Pageable pageable) {
         log.info("Запрос найти подборки событий.");
