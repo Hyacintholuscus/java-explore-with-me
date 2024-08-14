@@ -21,7 +21,7 @@ public interface EventService {
 
     List<EventLongDto> getEventsForAdmin(EventAdminSearchParam param);
 
-    List<PublicEventShortDto> getPublicEvents(EventPublicSearchParam param);
+    List<EventShortDto> getPublicEvents(EventPublicSearchParam param);
 
     PublicEventLongDto getPublicById(Long id);
 

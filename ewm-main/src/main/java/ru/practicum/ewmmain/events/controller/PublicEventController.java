@@ -3,8 +3,8 @@ package ru.practicum.ewmmain.events.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.ewmmain.events.dto.EventShortDto;
 import ru.practicum.ewmmain.events.dto.PublicEventLongDto;
-import ru.practicum.ewmmain.events.dto.PublicEventShortDto;
 import ru.practicum.ewmmain.events.params.EventPublicSearchParam;
 import ru.practicum.ewmmain.stat.service.StatsService;
 import ru.practicum.ewmmain.events.enums.EventSort;
@@ -26,7 +26,7 @@ public class PublicEventController {
     private final StatsService statsService;
 
     @GetMapping({"", "/"})
-    public List<PublicEventShortDto> getAllPublicEvents(@RequestParam(defaultValue = "") String text,
+    public List<EventShortDto> getAllPublicEvents(@RequestParam(defaultValue = "") String text,
                                                   @RequestParam(required = false) List<Long> categories,
                                                   @RequestParam(required = false) Boolean paid,
                                                   @RequestParam(required = false) String rangeStart,
@@ -44,7 +44,7 @@ public class PublicEventController {
         LocalDateTime end = (rangeEnd != null) ? LocalDateTime.parse(rangeEnd, Formatter.getFormatter())
                 : LocalDateTime.now().plusYears(20);
 
-        List<PublicEventShortDto> events = eventService.getPublicEvents(EventPublicSearchParam.builder()
+        List<EventShortDto> events = eventService.getPublicEvents(EventPublicSearchParam.builder()
                 .text(text)
                 .categoriesId(categories)
                 .paid(paid)

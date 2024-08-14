@@ -832,7 +832,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/admin/events/moderation",
+					"raw": "{{baseUrl}}/admin/events/moderation?from=0&size=1000",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -840,6 +840,16 @@
 						"admin",
 						"events",
 						"moderation"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "1000"
+						}
 					]
 				}
 			},

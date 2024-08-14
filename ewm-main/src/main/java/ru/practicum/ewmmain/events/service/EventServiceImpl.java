@@ -212,7 +212,7 @@ public class EventServiceImpl implements EventService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<PublicEventShortDto> getPublicEvents(EventPublicSearchParam param) {
+    public List<EventShortDto> getPublicEvents(EventPublicSearchParam param) {
         log.info("Запрос получить опубликованные события");
 
         if (param.getStart().isAfter(param.getEnd())) {
@@ -222,17 +222,17 @@ public class EventServiceImpl implements EventService {
 
         List<Event> events = eventStorage.searchPublicEvents(param);
 
-        Comparator<PublicEventShortDto> comparator = Comparator.comparing(PublicEventShortDto::getId);
+        Comparator<EventShortDto> comparator = Comparator.comparing(EventShortDto::getId);
 
         if ((param.getSort() != null) && (param.getSort().equals(EventSort.EVENT_DATE))) {
-            comparator = Comparator.comparing(PublicEventShortDto::getEventDate);
+            comparator = Comparator.comparing(EventShortDto::getEventDate);
         } else if ((param.getSort() != null) && (param.getSort().equals(EventSort.VIEWS))) {
-            comparator = Comparator.comparing(PublicEventShortDto::getViews, Comparator.reverseOrder());
+            comparator = Comparator.comparing(EventShortDto::getViews, Comparator.reverseOrder());
         }
 
         Map<Long, Long> view = getView(events, false);
         return events.stream()
-                .map(e -> eventMapper.toPublicShortDto(e, view.getOrDefault(e.getId(), 0L)))
+                .map(e -> eventMapper.toShortDto(e, view.getOrDefault(e.getId(), 0L)))
                 .sorted(comparator)
                 .collect(Collectors.toList());
     }

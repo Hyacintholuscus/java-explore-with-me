@@ -29,9 +29,6 @@ public interface EventMapper {
     @Mapping(target = "views", constant = "0L")
     EventLongDto toLongDto(Event event);
 
-    @Mapping(source = "views", target = "views")
-    PublicEventShortDto toPublicShortDto(Event event, Long views);
-
     @Mapping(source = "event.lat", target = "location.lat")
     @Mapping(source = "event.lon", target = "location.lon")
     @Mapping(source = "views", target = "views")
