@@ -87,7 +87,7 @@ public class AdminEventController {
 
     @PatchMapping({"/moderation/{comId}", "/moderation/{comId}/"})
     public ModerationCommentDto updateComment(@PathVariable
-                                              @Positive(message = "Event's id should be positive")
+                                              @Positive(message = "Comment's id should be positive")
                                               Long comId,
                                               @Valid @RequestBody CreateModerationCommentDto commentDto) {
         return eventService.updateModerationComment(comId, commentDto);
