@@ -1851,18 +1851,15 @@
 		},
 		{
 			"key": "comId",
-			"value": "1",
-			"type": "string"
+			"value": "0"
 		},
 		{
 			"key": "source3",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
 			"key": "source4",
-			"value": "",
-			"type": "string"
+			"value": ""
 		}
 	]
 }
