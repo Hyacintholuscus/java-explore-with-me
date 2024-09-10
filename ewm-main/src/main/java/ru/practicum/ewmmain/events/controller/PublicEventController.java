@@ -3,11 +3,11 @@ package ru.practicum.ewmmain.events.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.ewmmain.events.dto.EventShortDto;
+import ru.practicum.ewmmain.events.dto.PublicEventLongDto;
 import ru.practicum.ewmmain.events.params.EventPublicSearchParam;
 import ru.practicum.ewmmain.stat.service.StatsService;
-import ru.practicum.ewmmain.events.service.EventSort;
-import ru.practicum.ewmmain.events.dto.EventLongDto;
-import ru.practicum.ewmmain.events.dto.EventShortDto;
+import ru.practicum.ewmmain.events.enums.EventSort;
 import ru.practicum.ewmmain.events.service.EventService;
 import ru.practicum.ewmstatsutil.Formatter;
 
@@ -60,10 +60,10 @@ public class PublicEventController {
     }
 
     @GetMapping({"/{id}", "/{id}/"})
-    public EventLongDto getPublicEventById(@PathVariable
+    public PublicEventLongDto getPublicEventById(@PathVariable
                                                @Positive(message = "Event's id should be positive")
                                                Long id, HttpServletRequest request) {
-        EventLongDto event = eventService.getPublicById(id);
+        PublicEventLongDto event = eventService.getPublicById(id);
         statsService.createStats(request.getRequestURI(), request.getRemoteAddr());
         return event;
     }

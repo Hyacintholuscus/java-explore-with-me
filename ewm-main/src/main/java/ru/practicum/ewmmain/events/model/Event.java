@@ -3,11 +3,13 @@ package ru.practicum.ewmmain.events.model;
 import lombok.*;
 import org.hibernate.Hibernate;
 import ru.practicum.ewmmain.categories.model.Category;
+import ru.practicum.ewmmain.events.enums.EventState;
 import ru.practicum.ewmmain.user.model.User;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -47,6 +49,8 @@ public class Event {
     private Boolean requestModeration;
     @Enumerated(EnumType.STRING)
     private EventState state;
+    @OneToMany(mappedBy = "eventId")
+    private Set<ModerationComment> moderationComments;
 
     @Override
     public boolean equals(Object o) {

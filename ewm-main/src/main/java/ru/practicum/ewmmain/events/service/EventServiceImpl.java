@@ -7,15 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewmmain.categories.model.Category;
 import ru.practicum.ewmmain.categories.storage.CategoryStorage;
-import ru.practicum.ewmmain.events.model.EventState;
+import ru.practicum.ewmmain.events.dto.*;
+import ru.practicum.ewmmain.events.enums.EventSort;
+import ru.practicum.ewmmain.events.enums.StateAction;
+import ru.practicum.ewmmain.events.mapper.ModerationCommentMapper;
+import ru.practicum.ewmmain.events.enums.CommentStatus;
+import ru.practicum.ewmmain.events.enums.EventState;
+import ru.practicum.ewmmain.events.model.ModerationComment;
 import ru.practicum.ewmmain.events.params.EventAdminSearchParam;
 import ru.practicum.ewmmain.events.params.EventPublicSearchParam;
+import ru.practicum.ewmmain.events.storage.ModerationCommentStorage;
 import ru.practicum.ewmmain.stat.service.StatsService;
-import ru.practicum.ewmmain.events.dto.StateAction;
-import ru.practicum.ewmmain.events.dto.CreateEventDto;
-import ru.practicum.ewmmain.events.dto.EventLongDto;
-import ru.practicum.ewmmain.events.dto.EventShortDto;
-import ru.practicum.ewmmain.events.dto.UpdateEventDto;
 import ru.practicum.ewmmain.events.mapper.EventMapper;
 import ru.practicum.ewmmain.events.model.Event;
 import ru.practicum.ewmmain.events.storage.EventStorage;
@@ -40,6 +42,8 @@ public class EventServiceImpl implements EventService {
     private final UserStorage userStorage;
     private final CategoryStorage categoryStorage;
     private final StatsService statsService;
+    private final ModerationCommentStorage modCommentStorage;
+    private final ModerationCommentMapper modCommentMapper;
 
     private Category getCategory(Long categoryId) {
         return categoryStorage.findById(categoryId).orElseThrow(() -> {
@@ -70,7 +74,7 @@ public class EventServiceImpl implements EventService {
             throwNotValidTime(userId);
         }
         Event event = eventStorage.save(eventMapper.toEvent(createEventDto, initiator, category, EventState.PENDING));
-        return eventMapper.toLongDto(event, 0L);
+        return eventMapper.toLongDto(event);
     }
 
     private Event updateFields(Event event, UpdateEventDto updateDto, String initiator) {
@@ -124,17 +128,21 @@ public class EventServiceImpl implements EventService {
         }
 
         Event updatedEvent = eventStorage.save(event);
-        return eventMapper.toLongDto(updatedEvent, 0L);
+        return eventMapper.toLongDto(updatedEvent);
+    }
+
+    private Event getById(Long eventId) {
+        return eventStorage.findById(eventId).orElseThrow(() -> {
+            log.error("NotFound. Запрос от дминистратора. Событие с id {} не найдено.", eventId);
+            return new NotFoundException(String.format("Event with id = %d was not found", eventId));
+        });
     }
 
     @Override
     public EventLongDto updateByAdmin(Long eventId, UpdateEventDto updateDto) {
         log.info("Запрос на обновление события с id {} от администратора", eventId);
 
-        Event toUpdateEvent = eventStorage.findById(eventId).orElseThrow(() -> {
-            log.error("NotFound. Обновление администратором. Событие с id {} не найдено.", eventId);
-            return new NotFoundException(String.format("Event with id = %d was not found", eventId));
-        });
+        Event toUpdateEvent = getById(eventId);
 
         if (updateDto.getStateAction() != null && updateDto.getStateAction().equals(StateAction.PUBLISH_EVENT)
                 && toUpdateEvent.getState().equals(EventState.PENDING)) {
@@ -151,7 +159,7 @@ public class EventServiceImpl implements EventService {
 
         Event event = updateFields(toUpdateEvent, updateDto, "admin");
         Event updatedEvent = eventStorage.save(event);
-        return eventMapper.toLongDto(updatedEvent, 0L);
+        return eventMapper.toLongDto(updatedEvent);
     }
 
     @Transactional(readOnly = true)
@@ -178,10 +186,12 @@ public class EventServiceImpl implements EventService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<EventShortDto> getAllByUser(Long userId, Pageable pageable) {
+    public List<EventShortDto> getAllByUser(Long userId, EventState state, Pageable pageable) {
         log.info("Запрос на получение событий от пользователя с id {}", userId);
 
-        List<Event> events = eventStorage.findByInitiatorId(userId, pageable);
+        List<Event> events = (state != null)
+                ? eventStorage.findByInitiatorIdAndState(userId, state, pageable)
+                : eventStorage.findByInitiatorId(userId, pageable);
         Map<Long, Long> view = getView(events, false);
         return events.stream()
                 .map(e -> eventMapper.toShortDto(e, view.getOrDefault(e.getId(), 0L)))
@@ -230,7 +240,7 @@ public class EventServiceImpl implements EventService {
 
     @Transactional(readOnly = true)
     @Override
-    public EventLongDto getPublicById(Long id) {
+    public PublicEventLongDto getPublicById(Long id) {
         log.info("Запрос получить опубликованное событие с id {}", id);
 
         Event event = eventStorage.findPublicEventById(id).orElseThrow(() -> {
@@ -238,6 +248,50 @@ public class EventServiceImpl implements EventService {
             return new NotFoundException(String.format("Event with id = %d was not found", id));
         });
         Map<Long, Long> view = statsService.getView(new ArrayList<>(List.of(event.getId())), true);
-        return eventMapper.toLongDto(event, view.getOrDefault(event.getId(), 0L));
+        return eventMapper.toPublicLongDto(event, view.getOrDefault(event.getId(), 0L));
+    }
+
+    @Override
+    public ModerationCommentDto createModerationComment(Long eventId, CreateModerationCommentDto commentDto) {
+        log.info("Запрос создать комментарий к событию с id {}, отправленному на доработку", eventId);
+
+        Event event = getById(eventId);
+        if (event.getState().equals(EventState.PUBLISHED)) {
+            log.error("Conflict. Статус события ({}) не подходит для создания комментария.", event.getState());
+            throw new ConflictException("Cannot create comment for this event because it is published");
+        }
+
+        ModerationComment comment = modCommentStorage.save(ModerationComment.builder()
+                .text(commentDto.getText())
+                .eventId(eventId)
+                .status(CommentStatus.CREATED)
+                .created(LocalDateTime.now())
+                .build());
+        return modCommentMapper.toDto(comment);
+    }
+
+    @Override
+    public ModerationCommentDto updateModerationComment(Long comId, CreateModerationCommentDto commentDto) {
+        log.info("Запрос обновить комментарий с id {}", comId);
+
+        ModerationComment comment = modCommentStorage.findById(comId).orElseThrow(() -> {
+            log.error("NotFound. Комментарий с id {} не найден.", comId);
+            return new NotFoundException(String.format("Comment with id = %d was not found", comId));
+        });
+        if (!commentDto.getText().equals(comment.getText())) {
+            comment.setText(commentDto.getText());
+            comment.setStatus(CommentStatus.EDITED);
+            return modCommentMapper.toDto(modCommentStorage.save(comment));
+        } else return modCommentMapper.toDto(comment);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<EventLongDto> getPendingEvents(Pageable pageable) {
+        log.info("Запрос от администратора получить список событий, ожидающих модерацию");
+
+        return eventStorage.findPendingEvents(pageable).stream()
+                .map(e -> eventMapper.toLongDto(e, 0L))
+                .collect(Collectors.toList());
     }
 }

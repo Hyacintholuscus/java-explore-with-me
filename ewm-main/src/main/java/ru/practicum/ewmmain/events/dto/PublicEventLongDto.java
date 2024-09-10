@@ -8,11 +8,10 @@ import ru.practicum.ewmmain.events.model.Location;
 import ru.practicum.ewmmain.user.dto.InitiatorDto;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Value
 @Builder
-public class EventLongDto {
+public class PublicEventLongDto {
     Long id;
     InitiatorDto initiator;
     String title;
@@ -29,5 +28,4 @@ public class EventLongDto {
     Boolean requestModeration;
     EventState state;
     Long views;
-    Set<ModerationCommentDto> moderationComments;
 }

@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users, categories, events, requests, compilations, compilations_events;
+DROP TABLE IF EXISTS users, categories, events, requests, compilations, compilations_events, moderation_comments;
 
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -45,7 +45,15 @@ CREATE TABLE IF NOT EXISTS compilations (
 );
 
 CREATE TABLE IF NOT EXISTS compilations_events (
-	events_id INTEGER REFERENCES events (id) ON DELETE CASCADE,
-	compilation_id INTEGER REFERENCES compilations (id) ON DELETE CASCADE,
+	events_id BIGINT REFERENCES events (id) ON DELETE CASCADE,
+	compilation_id BIGINT REFERENCES compilations (id) ON DELETE CASCADE,
 	CONSTRAINT PK_EVENTS_COMPILATIONS PRIMARY KEY(events_id, compilation_id)
+);
+
+CREATE TABLE IF NOT EXISTS moderation_comments (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	event_id BIGINT REFERENCES events (id) ON DELETE CASCADE,
+	text VARCHAR(5000) NOT NULL,
+	status VARCHAR(10) NOT NULL CHECK (status IN ('CREATED', 'EDITED')),
+	created TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
